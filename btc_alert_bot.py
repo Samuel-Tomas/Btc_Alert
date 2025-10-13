@@ -2,10 +2,10 @@ import requests
 import time
 
 # Sem vlož svoj Telegram token od BotFather
-TOKEN = "8481187200:AAHoU-BkgleMSdLzezLfU4ASxD0WorgG8QE"
+TOKEN = os.getenv("BOT_TOKEN")
 
 # Tvoj chat ID (najprv si ho zistíš v kroku 3)
-CHAT_ID = "8101344499"
+CHAT_ID = os.getenv("CHAT_ID")
 
 # Funkcia na odoslanie správy
 def send_message(text):
