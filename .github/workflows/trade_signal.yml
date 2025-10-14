@@ -1,0 +1,43 @@
+name: Trade Signal Bot
+
+# spustiť každých 5 minút; ak chceš menej často, zmeň cron
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write   # dôležité, aby GITHUB_TOKEN mohol committovať state.json
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true  # dôležité pre commit späť
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install deps
+        run: pip install requests
+
+      - name: Run trade signal script
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+          START_CAPITAL: ${{ secrets.START_CAPITAL }}  # optional
+        run: |
+          python trade_signal.py
+          # ak state.json sa zmenil, commitneme ho naspäť do repo
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add state.json
+            git commit -m "Update state.json (trade signal bot)"
+            git push
+          fi
