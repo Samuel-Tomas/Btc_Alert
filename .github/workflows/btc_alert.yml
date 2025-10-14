@@ -2,7 +2,7 @@ name: BTC Price Alert
 
 on:
   schedule:
-    - cron: "*/15 * * * *"  # spustí sa každých 15 minút
+    - cron: "*/5 * * * *"  # spustí sa každých 15 minút
   workflow_dispatch:        # umožní manuálne spustenie
 
 jobs:
