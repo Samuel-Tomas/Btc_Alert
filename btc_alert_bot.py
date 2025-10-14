@@ -1,5 +1,6 @@
 import requests
 import time
+import os
 
 # Sem vlož svoj Telegram token od BotFather
 TOKEN = os.getenv("BOT_TOKEN")
