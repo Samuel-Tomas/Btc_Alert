@@ -18,12 +18,9 @@ def send_message(text):
     requests.post(url, data=data)
 
 def get_btc_price_eur():
-    """Získa aktuálnu cenu BTC v eurách"""
-    btc = requests.get("https://api.coindesk.com/v1/bpi/currentprice.json").json()
-    btc_usd = btc["bpi"]["USD"]["rate_float"]
-    eur_rate = requests.get("https://api.exchangerate.host/latest?base=USD&symbols=EUR").json()
-    usd_to_eur = eur_rate["rates"]["EUR"]
-    return btc_usd * usd_to_eur
+    response = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eur")
+    data = response.json()
+    return data["bitcoin"]["eur"]
 
 def load_state():
     """Načíta alebo inicializuje stav"""
