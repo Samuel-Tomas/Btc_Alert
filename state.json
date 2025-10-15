@@ -1,9 +1,0 @@
-{
-  "capital": 100.0,
-  "last_action": "AWAIT_SELL",
-  "buy_price": 95593.0,
-  "quantity": 0.001046101702007469,
-  "min_target_price": 96548.93,
-  "max_price": 95593.0,
-  "history": []
-}
