@@ -2,40 +2,32 @@ name: Trade Signal Bot
 
 on:
   schedule:
-    - cron: "*/5 * * * *"   # každých 5 minút
+    - cron: "*/5 * * * *"  # každých 5 minút
   workflow_dispatch: {}
 
 permissions:
-  contents: write   # povolenie na commit state.json
+  contents: write
 
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           persist-credentials: true
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-
-      - name: Install deps
-        run: pip install requests
-
+      - run: pip install requests
       - name: Run trade signal script
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
-          START_CAPITAL: ${{ secrets.START_CAPITAL }}   # voliteľné (ak nechceš, nemusíš nastavovať)
-          TRAIL_DROP: ${{ secrets.TRAIL_DROP }}         # voliteľné
-          MIN_PROFIT_EUR: ${{ secrets.MIN_PROFIT_EUR }} # voliteľné
-        run: |
-          python trade_signal.py
-
-      - name: Commit state.json if changed
+          START_CAPITAL: 100
+          MIN_PROFIT_EUR: 1
+          TRAIL_DROP: 0.01
+        run: python trade_signal.py
+      - name: Commit updated state.json
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             git config user.name "github-actions[bot]"
@@ -46,3 +38,4 @@ jobs:
           else
             echo "No changes to commit."
           fi
+
