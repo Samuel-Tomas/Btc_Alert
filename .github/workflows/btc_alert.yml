@@ -3,7 +3,7 @@ name: BTC Price Alert Bot
 on:
   schedule:
     - cron: "*/5 * * * *"   # spustí sa každých 5 minút
-  workflow_dispatch:         # možnosť manuálneho spustenia
+  workflow_dispatch:         # manuálne spustenie
 
 jobs:
   run-bot:
@@ -25,4 +25,5 @@ jobs:
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
-        run: trade_signal.py
+        run: python ./btc_alert_bot.py
+
